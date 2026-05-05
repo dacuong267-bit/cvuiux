@@ -1,1 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enzo Hart — UI/UX Designer</title>
+  <style>
+    :root {
+      --bg: #0d0f15;
+      --bg-soft: #14171f;
+      --surface: rgba(22, 25, 33, 0.95);
+      --surface-alt: #1f232d;
+      --text: #f4f5f7;
+      --muted: #9aa0ac;
+      --accent: #f8f9fb;
+      --accent-soft: rgba(248, 249, 251, 0.18);
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.22);
+      --radius: 28px;
+      --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.05), transparent 28%),
+        linear-gradient(180deg, #111216 0%, #090a0e 100%);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    section {
+      padding: 90px 24px 60px;
+      position: relative;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      animation: fadeUp 1s ease forwards;
+    }
+
+    .reveal:nth-child(1) { animation-delay: 0.18s; }
+    .reveal:nth-child(2) { animation-delay: 0.28s; }
+    .reveal:nth-child(3) { animation-delay: 0.34s; }
+    .reveal:nth-child(4) { animation-delay: 0.42s; }
+    .reveal:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-blob {
+      position: absolute;
+      inset: -40px 0 0;
+      background: radial-gradient(circle at top, rgba(248, 249, 251, 0.14), transparent 34%),
+        radial-gradient(circle at 20% 70%, rgba(190, 195, 208, 0.09), transparent 30%);
+      filter: blur(32px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 999;
+      width: 100%;
+      background: rgba(11, 13, 20, 0.76);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-wrap {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+    }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+      color: var(--accent);
+    }
+
+    nav ul {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      position: relative;
+      color: var(--muted);
+      font-size: 0.96rem;
+      transition: color var(--transition);
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 100%;
+      height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+
+    nav a:hover,
+    nav a:focus-visible {
+      color: var(--accent);
+    }
+
+    nav a:hover::after,
+    nav a:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 120px;
+    }
+
+    .hero__inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 36px;
+      max-width: 760px;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.32em;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .hero__title {
+      margin: 0;
+      font-size: clamp(3rem, 4.5vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      max-width: 10ch;
+    }
+
+    .hero__copy {
+      max-width: 44ch;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .hero__actions {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--accent);
+      padding: 16px 26px;
+      border-radius: 999px;
+      transition: transform var(--transition), background var(--transition), box-shadow var(--transition);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(14px);
+    }
+
+    .button:hover,
+    .button:focus-visible {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+    }
+
+    /* About */
+    .section-title {
+      margin: 0 0 28px;
+      font-size: clamp(2rem, 2.9vw, 2.8rem);
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .profile-card {
+      display: grid;
+      place-items: center;
+      min-height: 420px;
+      border-radius: var(--radius);
+      padding: 36px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02), var(--shadow);
+    }
+
+    .profile-card__image {
+      width: min(280px, 100%);
+      aspect-ratio: 1/1;
+      border-radius: 34px;
+      background: linear-gradient(135deg, #2a2e39, #1d2028 52%, #262a33);
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    }
+
+    .profile-card__image::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.24), transparent 22%),
+        linear-gradient(180deg, rgba(250, 250, 251, 0.04), transparent);
+      border-radius: 24px;
+    }
+
+    .profile-card__label {
+      position: absolute;
+      left: 22px;
+      bottom: 24px;
+      color: var(--accent);
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .about-copy {
+      display: grid;
+      gap: 24px;
+    }
+
+    .about-copy p {
+      color: var(--muted);
+      max-width: 44ch;
+      margin: 0;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .skill-pill {
+      padding: 14px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--accent);
+      font-size: 0.95rem;
+    }
+
+    /* Projects */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px;
+    }
+
+    .project-card {
+      border-radius: 28px;
+      overflow: hidden;
+      background: rgba(18, 20, 26, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: var(--shadow);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px) scale(1.005);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.24);
+    }
+
+    .project-card__visual {
+      min-height: 240px;
+      background: linear-gradient(135deg, #2b2f3d 0%, #17191f 100%);
+      display: grid;
+      place-items: center;
+      color: rgba(255, 255, 255, 0.14);
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .project-card__content {
+      padding: 28px 26px 30px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .project-card__title {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .project-card__text {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .project-tags li {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .contact-copy {
+      max-width: 620px;
+    }
+
+    .contact-copy p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 18px;
+      max-width: 640px;
+    }
+
+    .field {
+      display: grid;
+      gap: 10px;
+    }
+
+    .field label {
+      font-size: 0.96rem;
+      color: var(--accent);
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      background: rgba(13, 15, 21, 0.92);
+      color: var(--text);
+      padding: 18px 20px;
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+      outline: none;
+      min-height: 54px;
+    }
+
+    .field textarea {
+      min-height: 160px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: rgba(126, 135, 255, 0.45);
+      box-shadow: 0 0 0 4px rgba(126, 135, 255, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .submit-button {
+      width: fit-content;
+      margin-top: 6px;
+    }
+
+    .footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 34px 0 24px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .split-grid,
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 110px;
+      }
+
+      nav ul {
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-wrap {
+        width: min(100%, calc(100% - 32px));
+      }
+
+      header {
+        border-bottom: none;
+      }
+
+      .hero {
+        padding-top: 108px;
+      }
+
+      .hero__title {
+        font-size: clamp(2.8rem, 7vw, 3.8rem);
+      }
+
+      .project-card__visual {
+        min-height: 200px;
+      }
+
+      .section-title {
+        font-size: clamp(1.8rem, 5vw, 2.4rem);
+      }
+
+      section {
+        padding: 70px 18px 48px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .nav-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+      }
+
+      .hero__actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .profile-card,
+      .project-card,
+      .contact-form {
+        border-radius: 24px;
+      }
+
+      .hero__inner {
+        gap: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-wrap">
+      <div class="logo">Enzo Hart</div>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-blob"></div>
+      <div class="container hero__inner">
+        <p class="eyebrow reveal">Luxury UI/UX Portfolio</p>
+        <h1 class="hero__title reveal">Enzo Hart — UI/UX Designer</h1>
+        <p class="hero__copy reveal">Crafting refined digital experiences for e-commerce, learning platforms, and modern brand systems. Focused on premium clarity, intuitive journeys, and subtle motion.</p>
+        <div class="hero__actions reveal">
+          <a class="button" href="#projects">View Projects</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container reveal">
+        <h2 class="section-title">About</h2>
+        <div class="split-grid">
+          <div class="profile-card">
+            <div class="profile-card__image">
+              <div class="profile-card__label">Profile</div>
+            </div>
+          </div>
+          <div class="about-copy">
+            <p>With 1 year of focused experience in UI design, I create polished digital products for e-commerce brands, school systems, and learning management platforms. My work blends thoughtful structure with minimalist luxury and accessible interaction.</p>
+            <div class="skills-grid">
+              <span class="skill-pill">UI Design</span>
+              <span class="skill-pill">UX Research</span>
+              <span class="skill-pill">Wireframing</span>
+              <span class="skill-pill">Figma</span>
+              <span class="skill-pill">HTML/CSS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container reveal">
+        <h2 class="section-title">Projects</h2>
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-card__visual">E-commerce UI</div>
+            <div class="project-card__content">
+              <h3 class="project-card__title">Luxe Shop Redesign</h3>
+              <p class="project-card__text">A refined shopping experience built to elevate product discovery with subtle motion, clean hierarchy, and premium visual balance.</p>
+              <ul class="project-tags">
+                <li>E-commerce</li>
+                <li>Product</li>
+              </ul>
+            </div>
+          </article>
+          <article class="project-card">
+            <div class="project-card__visual">LMS Dashboard</div>
+            <div class="project-card__content">
+              <h3 class="project-card__title">Learning Hub</h3>
+              <p class="project-card__text">A modern LMS dashboard concept for schools, designed to simplify navigation, progress tracking, and classroom engagement.</p>
+              <ul class="project-tags">
+                <li>LMS</li>
+                <li>Education</li>
+              </ul>
+            </div>
+          </article>
+          <article class="project-card">
+            <div class="project-card__visual">School System</div>
+            <div class="project-card__content">
+              <h3 class="project-card__title">Campus Portal</h3>
+              <p class="project-card__text">A calm and efficient interface for school administration and student workflows, using a neutral palette and elevated content cards.</p>
+              <ul class="project-tags">
+                <li>School Systems</li>
+                <li>UX</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container reveal">
+        <h2 class="section-title">Contact</h2>
+        <div class="contact-grid">
+          <div class="contact-copy">
+            <p>Ready to collaborate on premium digital experiences? Send a message and let's explore how design can elevate your next project.</p>
+          </div>
+          <form class="contact-form" action="#" method="post">
+            <div class="field">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" placeholder="Your name" />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="hello@example.com" />
+            </div>
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell me about your project"></textarea>
+            </div>
+            <div class="field submit-button">
+              <button class="button" type="submit">Send Message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer reveal">
+    <p>© 2026 Enzo Hart. Designed with a premium minimal aesthetic.</p>
+    <ul class="footer-links">
+      <li><a href="#">Dribbble</a></li>
+      <li><a href="#">Behance</a></li>
+      <li><a href="#">LinkedIn</a></li>
+    </ul>
+  </footer>
+</body>
+</html>
